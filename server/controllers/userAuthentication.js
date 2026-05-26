@@ -1,6 +1,7 @@
 const User=require('../model/user');
 const bcrypt=require('bcrypt');
 const jwt=require('jsonwebtoken');
+const redis_client = require('../config/redis');
 const register = async (req, res) => {
     const { name, email, password } = req.body;
     if (!name || !email || !password) {
@@ -49,22 +50,18 @@ const login=async(req,res)=>{
     res.json("LoggedIn successfully");
 }
 const logout = async (req, res) => {
+ console.log("req",req);
+    console.log("req.cookies",req.cookies);
+       const {token}=req.cookies;
+        const payload=jwt.decode(token);
+        console.log("token",token);
+        console.log("payload",payload);
+        await redis_client.set(`token:${token}`,"Blocked");
+        await redis_client.expireAt(`token:${token}`,payload.exp);
+          res.clearCookie('token');
+        res.send("logged out Successfully");
 
-   try {
-
-      res.clearCookie('token');
-
-      res.status(200).json({
-         message: 'Logout successful'
-      });
-
-   } catch (error) {
-
-      res.status(500).json({
-         message: 'Server Error'
-      });
-
-   }
+   
 
 };
 

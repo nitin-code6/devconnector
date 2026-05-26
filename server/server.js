@@ -2,7 +2,7 @@ const express = require('express');
 const dotenv = require('dotenv');
 const connectDB = require('./config/db');
 // Load environment variables from .env
-
+const cookieParser = require('cookie-parser');
 dotenv.config();
 const client=require('./config/redis');
 const userAuthRoutes = require('./Routes/userAuth');
@@ -13,6 +13,8 @@ app.get('/', (req, res) => {
   res.send('DevConnector API Running');
 });
 app.use(express.json());
+app.use(cookieParser());
+
 app.use('/api/user', userAuthRoutes);
 
 const startServer = async () => {
