@@ -2,8 +2,9 @@ const express = require('express');
 const dotenv = require('dotenv');
 const connectDB = require('./config/db');
 // Load environment variables from .env
+
 dotenv.config();
-connectDB();
+const client=require('./config/redis');
 const userAuthRoutes = require('./Routes/userAuth');
 const app = express();
 
@@ -14,6 +15,24 @@ app.get('/', (req, res) => {
 app.use(express.json());
 app.use('/api/user', userAuthRoutes);
 
-// Port number
-const PORT = process.env.PORT || 5000;
+const startServer = async () => {
+  try {
+    await connectDB(); // DB connect
+
+    await client.connect(); // Redis connect
+//     await client.set('foo', 'bar');
+// const result = await client.get('foo');
+// console.log(result) 
+    console.log("Redis connected");
+
+
+    const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
+
+
+  } catch (err) {
+    console.error("Error occurred:", err);
+  }
+};
+
+startServer();

@@ -48,5 +48,24 @@ const login=async(req,res)=>{
 });
     res.json("LoggedIn successfully");
 }
+const logout = async (req, res) => {
 
-module.exports = {register,login};
+   try {
+
+      res.clearCookie('token');
+
+      res.status(200).json({
+         message: 'Logout successful'
+      });
+
+   } catch (error) {
+
+      res.status(500).json({
+         message: 'Server Error'
+      });
+
+   }
+
+};
+
+module.exports = {register,login,logout};
