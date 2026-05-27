@@ -29,7 +29,7 @@ const register = async (req, res) => {
 const login=async(req,res)=>{
 
     const {email,password}=req.body;
-        console.log(typeof password);
+        // console.log(typeof password);
       if(!email) throw new Error("Invalid Credentials");
     if(!password) throw new Error("Invalid Credentials");
     const user = await User.findOne({ email});
@@ -38,7 +38,7 @@ const login=async(req,res)=>{
    }
    console.log(user);
    const Match=await bcrypt.compare(password,user.password);
-   console.log(Match);
+//    console.log(Match);
    if(!Match) throw new Error("Invalid Credentials");
     const token=  jwt.sign({
      id:user._id,
@@ -50,12 +50,12 @@ const login=async(req,res)=>{
     res.json("LoggedIn successfully");
 }
 const logout = async (req, res) => {
- console.log("req",req);
-    console.log("req.cookies",req.cookies);
+//  console.log("req",req);
+    // console.log("req.cookies",req.cookies);
        const {token}=req.cookies;
         const payload=jwt.decode(token);
-        console.log("token",token);
-        console.log("payload",payload);
+        // console.log("token",token);
+        // console.log("payload",payload);
         await redis_client.set(`token:${token}`,"Blocked");
         await redis_client.expireAt(`token:${token}`,payload.exp);
           res.clearCookie('token');
@@ -64,5 +64,22 @@ const logout = async (req, res) => {
    
 
 };
+const getMe=async(req,res)=>{
+   try{
+  const user=req.result;
+  
+    if (!user) {
+      throw new Error("Invalid Credentials");
+    }
 
-module.exports = {register,login,logout};
+    res.status(200).send({
+      name: user.name,
+     email: user.email,
+    });
+   }
+   catch (err) {
+    res.status(401).send("Error: " + err.message);
+  }
+};
+
+module.exports = {register,login,logout,getMe};
