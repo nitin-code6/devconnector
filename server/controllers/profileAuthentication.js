@@ -87,4 +87,56 @@ const getProfile=async(req,res)=>{
         })
     }
 }
-module.exports={CreateProfile,getMyProfile,getProfile};
+const updateProfile = async (req, res) => {
+
+   try {
+
+      const {
+         bio,
+         skills,
+         company,
+         location,
+         socials
+      } = req.body;
+
+      const user = req.result;
+
+      const updatedProfile =
+         await Profile.findOneAndUpdate(
+
+            { user: user._id },
+
+            {
+               bio,
+               skills,
+               company,
+               location,
+               socials
+            },
+
+            {
+               new: true
+            }
+
+         );
+
+      if (!updatedProfile) {
+
+         return res.status(404).json({
+            message: 'Profile not found'
+         });
+
+      }
+
+      res.status(200).json(updatedProfile);
+
+   } catch (error) {
+
+      res.status(500).json({
+         message: error.message
+      });
+
+   }
+
+};
+module.exports={CreateProfile,getMyProfile,getProfile,updateProfile};
