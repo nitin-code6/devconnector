@@ -6,17 +6,18 @@ const cookieParser = require('cookie-parser');
 dotenv.config();
 const client=require('./config/redis');
 const userAuthRoutes = require('./Routes/userAuth');
+const profileRoutes = require('./Routes/profile');
 const app = express();
 
 // Test route
-app.get('/', (req, res) => {
-  res.send('DevConnector API Running');
-});
+// app.get('/', (req, res) => {
+//   res.send('DevConnector API Running');
+// });
 app.use(express.json());
 app.use(cookieParser());
 
 app.use('/api/user', userAuthRoutes);
-
+app.use('/api/profile', profileRoutes);
 const startServer = async () => {
   try {
     await connectDB(); // DB connect

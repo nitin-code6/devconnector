@@ -14,7 +14,7 @@ const userMiddleware=async(req,res,next)=>{
         if(IsBlocked) throw new Error('Invalid token');
         req.result=result;
       
-        // next();
+        next();
     }
     catch(err){
        res.status(401).send('Error: '+err.message);
