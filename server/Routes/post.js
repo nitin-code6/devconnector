@@ -2,8 +2,10 @@ const express = require('express');
 
 const router = express.Router();
 const userMiddleware=require('../Middleware/UserMiddleware')
-const {createPost}=require('../controllers/postController');
+const {createPost,getPosts,getPost,deletePost}=require('../controllers/postController');
 
-router.post('/create',createPost);
-
+router.post('/',userMiddleware,createPost);
+router.get('/',userMiddleware,getPosts);
+router.get('/:id',userMiddleware,getPost);
+router.delete('/:id',userMiddleware,deletePost);
 module.exports = router;

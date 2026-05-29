@@ -7,6 +7,7 @@ dotenv.config();
 const client=require('./config/redis');
 const userAuthRoutes = require('./Routes/userAuth');
 const profileRoutes = require('./Routes/profile');
+const postRoutes=require('./Routes/post');
 const app = express();
 
 // Test route
@@ -18,7 +19,7 @@ app.use(cookieParser());
 
 app.use('/api/user', userAuthRoutes);
 app.use('/api/profile', profileRoutes);
-app.use('/api/profile', profileRoutes);
+app.use('/api/post',postRoutes );
 const startServer = async () => {
   try {
     await connectDB(); // DB connect
