@@ -118,6 +118,50 @@ const deletePost = async (req, res) => {
    }
 
 };
+const likePost = async (req, res) => {
+
+   try {
+
+      const user = req.result;
+
+      const post = await Post.findById(
+         req.params.id
+      );
+
+      if (!post) {
+
+         return res.status(404).json({
+            message: 'Post not found'
+         });
+
+      }
+
+      // Already liked?
+      if (
+         post.likes.includes(user._id)
+      ) {
+
+         return res.status(400).json({
+            message: 'Post already liked'
+         });
+
+      }
+
+      post.likes.push(user._id);
+
+      await post.save();
+
+      res.status(200).json(post);
+
+   } catch (err) {
+
+      res.status(500).json({
+         message: err.message
+      });
+
+   }
+
+};
 module.exports = {
-   createPost,getPosts,getPost,deletePost
+   createPost,getPosts,getPost,deletePost,likePost
 };
