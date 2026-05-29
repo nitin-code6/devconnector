@@ -213,6 +213,108 @@ const unlikePost = async (req, res) => {
    }
 
 };
+const addComment = async (req, res) => {
+
+   try {
+
+      const { text } = req.body;
+
+      if (!text) {
+         return res.status(400).json({
+            message: "Comment text required"
+         });
+      }
+
+      const user = req.result;
+
+      const post = await Post.findById(
+         req.params.id
+      );
+
+      if (!post) {
+         return res.status(404).json({
+            message: "Post not found"
+         });
+      }
+
+      post.comments.push({
+         user: user._id,
+         text
+      });
+
+      await post.save();
+
+      res.status(201).json(post);
+
+   } catch (err) {
+
+      res.status(500).json({
+         message: err.message
+      });
+
+   }
+
+};
+const deleteComment = async (req, res) => {
+
+   try {
+  
+     
+      const { postId, commentId } =
+         req.params;
+
+      const user = req.result;
+
+      const post = await Post.findById(
+         postId
+      );
+
+      if (!post) {
+
+         return res.status(404).json({
+            message: 'Post not found'
+         });
+
+      }
+
+      const comment = post.comments.id(
+         commentId
+      );
+
+      if (!comment) {
+
+         return res.status(404).json({
+            message: 'Comment not found'
+         });
+
+      }
+
+      if (
+         comment.user.toString() !==
+         user._id.toString()
+      ) {
+
+         return res.status(403).json({
+            message: 'Not authorized'
+         });
+
+      }
+
+      comment.deleteOne();
+
+      await post.save();
+
+      res.status(200).json(post);
+
+   } catch (err) {
+
+      res.status(500).json({
+         message: err.message
+      });
+
+   }
+
+};
 module.exports = {
-   createPost,getPosts,getPost,deletePost,likePost,unlikePost
+   createPost,getPosts,getPost,deletePost,likePost,unlikePost,addComment,deleteComment
 };
