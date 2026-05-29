@@ -18,6 +18,7 @@ app.use(cookieParser());
 
 app.use('/api/user', userAuthRoutes);
 app.use('/api/profile', profileRoutes);
+app.use('/api/profile', profileRoutes);
 const startServer = async () => {
   try {
     await connectDB(); // DB connect
