@@ -4,7 +4,7 @@ const router = express.Router();
 const userMiddleware=require('../Middleware/UserMiddleware')
 
 const {CreateProfile,getMyProfile,getProfile,updateProfile,deleteProfile}=require('../controllers/profileAuthentication');
-console.log(deleteProfile);
+console.log(CreateProfile);
 router.post('/create',userMiddleware,CreateProfile);
 router.get('/me',userMiddleware,getMyProfile);
 router.get('/:username',userMiddleware,getProfile);

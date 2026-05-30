@@ -1,7 +1,10 @@
 const Profile=require('../model/profile');
+const {validateProfileData}=require('../utils/profileValidator');
 
 const CreateProfile=async (req,res)=>{
-    console.log(req.body);
+    try{ 
+        validateProfileData(req.body);
+        console.log(validateProfileData);
     const {
    username,
    bio,
@@ -20,8 +23,10 @@ if (existingProfile) {
    return res.status(400).json({
       message: 'Profile already exists'
    });
-
 }
+     
+   
+
 const profile = await Profile.create({
 
    user: user._id,
@@ -35,10 +40,16 @@ const profile = await Profile.create({
 
 });
 res.status(201).json(profile);
+}catch (error) {
+   return res.status(400).json({
+      message: error.message
+   });
+}
 };
 const getMyProfile = async (req, res) => {
 
    try {
+
 
       const user = req.result;
       console.log(user);
