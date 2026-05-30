@@ -1,9 +1,10 @@
 const Post = require('../model/Post');
+const { validatePostData} = require('../utils/postValidator');
 
 const createPost = async (req, res) => {
 
    try {
-
+validatePostData(req.body);
       const { content } = req.body;
       if (!content) {
          return res.status(400).json({
