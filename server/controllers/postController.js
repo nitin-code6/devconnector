@@ -316,6 +316,27 @@ const deleteComment = async (req, res) => {
    }
 
 };
+const getMyPosts = async (req, res) => {
+
+   try {
+
+      const user = req.result;
+
+      const posts = await Post.find({
+         user: user._id
+      }).sort({ createdAt: -1 });
+
+      res.status(200).json(posts);
+
+   } catch (err) {
+
+      res.status(500).json({
+         message: err.message
+      });
+
+   }
+
+};
 module.exports = {
-   createPost,getPosts,getPost,deletePost,likePost,unlikePost,addComment,deleteComment
+   createPost,getPosts,getPost,deletePost,likePost,unlikePost,addComment,deleteComment,getMyPosts
 };
