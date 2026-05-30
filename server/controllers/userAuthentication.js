@@ -2,7 +2,11 @@ const User=require('../model/user');
 const bcrypt=require('bcrypt');
 const jwt=require('jsonwebtoken');
 const redis_client = require('../config/redis');
-const register = async (req, res) => {
+const {validateRegisterData
+} = require('../utils/authValidator');
+const register = async (req,res) => {
+   try {
+       validateRegisterData(req.body);
     const { name, email, password } = req.body;
     if (!name || !email || !password) {
         return res.status(400).json({ msg: 'Please enter all fields' });
@@ -14,7 +18,6 @@ const register = async (req, res) => {
         res.json("User already exists");
     }
     const user = await User.create(req.body);
-//    console.log(user);
   const token=  jwt.sign({
      id:user._id,
      email:user.email
@@ -23,9 +26,16 @@ const register = async (req, res) => {
    maxAge: 60 * 60 * 1000
 });
     res.json("User registered successfully");
-    
-    // console.log(token);
+   }
+   catch(err){
+
+      return res.status(400).json({
+         message: err.message
+      });
+
+   }
 }
+
 const login=async(req,res)=>{
 
     const {email,password}=req.body;
