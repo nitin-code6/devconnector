@@ -43,28 +43,56 @@ const register = async (req,res) => {
 }
 }
 
-const login=async(req,res)=>{
+const login = async (req,res) => {
 
-    const {email,password}=req.body;
-        // console.log(typeof password);
-      if(!email) throw new Error("Invalid Credentials");
-    if(!password) throw new Error("Invalid Credentials");
-    const user = await User.findOne({ email});
-    if (!user) {
- throw new Error("Invalid Credentials");
+   try {
+
+      const { email, password } = req.body;
+
+      if(!email)
+         throw new Error("Invalid Credentials");
+
+      if(!password)
+         throw new Error("Invalid Credentials");
+
+      const user = await User.findOne({ email });
+
+      if(!user)
+         throw new Error("Invalid Credentials");
+
+      const match = await bcrypt.compare(
+         password,
+         user.password
+      );
+
+      if(!match)
+         throw new Error("Invalid Credentials");
+
+      const token = jwt.sign(
+         {
+            id: user._id,
+            email: user.email
+         },
+         process.env.JWT_secret,
+         { expiresIn: "1h" }
+      );
+
+      res.cookie("token", token, {
+         maxAge: 60 * 60 * 1000
+      });
+
+      return res.json({
+         message: "Logged In Successfully"
+      });
+
+   } catch(err) {
+
+      return res.status(401).json({
+         message: err.message
+      });
+
    }
-   console.log(user);
-   const Match=await bcrypt.compare(password,user.password);
-//    console.log(Match);
-   if(!Match) throw new Error("Invalid Credentials");
-    const token=  jwt.sign({
-     id:user._id,
-     email:user.email
-     }, process.env.JWT_secret, { expiresIn: '1h' });
-     res.cookie('token', token,{
-   maxAge: 60 * 60 * 1000
-});
-    res.json("LoggedIn successfully");
+
 }
 const logout = async (req, res) => {
 //  console.log("req",req);

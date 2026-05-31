@@ -1,6 +1,6 @@
 import Register from "./pages/Register";
 import Login from "./pages/Login";
-
+import Dashboard from "./pages/dashboard";
 import {
   Routes,
   Route
@@ -21,7 +21,10 @@ function App() {
         path="/login"
         element={<Login />}
       />
-
+    <Route
+   path="/dashboard"
+   element={<Dashboard />}
+/>
     </Routes>
 
   );
