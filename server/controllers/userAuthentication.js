@@ -16,8 +16,11 @@ const register = async (req,res) => {
 
     const existingUser= await User.findOne({ email });
     if (existingUser) {
-        res.json("User already exists");
+        return res.status(400).json({
+   message: "User already exists"
+});
     }
+  
     const user = await User.create(req.body);
   const token=  jwt.sign({
      id:user._id,
@@ -26,15 +29,18 @@ const register = async (req,res) => {
      res.cookie('token', token,{
    maxAge: 60 * 60 * 1000
 });
-    res.json("User registered successfully");
+   return  res.json("User registered successfully");
    }
-   catch(err){
+  catch(err){
 
-      return res.status(500).json({
-         message: err.message
-      });
+   console.log("BACKEND ERROR:");
+   console.log(err);
 
-   }
+   return res.status(500).json({
+      message: err.message
+   });
+
+}
 }
 
 const login=async(req,res)=>{
