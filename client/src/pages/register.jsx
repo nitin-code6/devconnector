@@ -1,5 +1,6 @@
 import { useState } from "react";
 import axios from 'axios';
+import { Link } from "react-router";
 function Register() {
 const [name, setName] = useState("");
 const [email, setEmail] = useState("");
@@ -7,7 +8,7 @@ const [password, setPassword] = useState("");
 const [error, setError] = useState("");
 const [success, setSuccess] = useState("");
 const [loading, setLoading] = useState(false);
-const [showPassword, setShowPassword] = useState(false);
+const   [showPassword,setShowPassword]=useState(false);
 const handleSubmit = async (e) => {
 console.log('I am running ')
    e.preventDefault();
@@ -57,7 +58,7 @@ setPassword("");
          <div className="card-body">
 
             <h2 className="text-3xl font-bold text-center">
-               Create Account
+               Create ccount
             </h2>
 
             <p className="text-center text-sm opacity-70">
@@ -171,14 +172,17 @@ setPassword("");
 
             <div className="text-center text-sm mt-2">
 
-               Already have an account?
+         
 
-               <a
-                  href="#"
-                  className="link link-primary ml-1"
-               >
-                  Sign In
-               </a>
+              <p>
+  Already have an account?
+  <Link
+    to="/login"
+    className="link link-primary ml-1"
+  >
+    Sign In
+  </Link>
+</p>
 
             </div>
 
