@@ -2,30 +2,34 @@ import { useState } from "react";
 import axios from 'axios';
 function Register() {
 const [name, setName] = useState("");
-const [emailId, setEmailId] = useState("");
+const [email, setEmailId] = useState("");
 const [password, setPassword] = useState("");
-   const handleSubmit = (e) => {
+const handleSubmit = async (e) => {
 
    e.preventDefault();
 
-  const handleSubmit = async (e) => {
+   try {
 
-   e.preventDefault();
+      const response = await axios.post(
+         "http://localhost:5000/api/user/register",
+         {
+            name,
+            email,
+            password
+         }
+      );
 
-   const response = await axios.post(
-      "http://localhost:5000/api/user/register",
-      {
-         name,
-         emailId,
-         password
-      }
-   );
+      console.log(response.data);
 
-   console.log(response);
+   } catch (err) {
+
+      console.log(err.response.data);
+
+   }
 
 };
 
-};
+
    return (
 
 
@@ -46,7 +50,7 @@ const [password, setPassword] = useState("");
 <input
    type="email"
    placeholder="Email"
-   value={emailId}
+   value={email}
    onChange={(e) => setEmailId(e.target.value)}
 />
 

@@ -6,6 +6,7 @@ const {validateRegisterData
 } = require('../utils/authValidator');
 const register = async (req,res) => {
    try {
+    console.log(req.body);
        validateRegisterData(req.body);
     const { name, email, password } = req.body;
     if (!name || !email || !password) {
@@ -29,7 +30,7 @@ const register = async (req,res) => {
    }
    catch(err){
 
-      return res.status(400).json({
+      return res.status(500).json({
          message: err.message
       });
 
