@@ -36,11 +36,29 @@ console.log(response.data);
 setEmail("");
 setPassword("");
 
-   } catch (err) {
-     console.log(err)
-      setError(err.response?.data?.message);
-       
+   } catch(err) {
+
+   if (err.response) {
+
+      setError(
+         err.response.data.message
+      );
+
+   } else if (err.request) {
+
+      setError(
+         "Backend server is not running"
+      );
+
+   } else {
+
+      setError(
+         "Something went wrong"
+      );
+
    }
+
+}
    finally {
 
    setLoading(false);

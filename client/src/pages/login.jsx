@@ -22,26 +22,46 @@ const handleSubmit = async (e) => {
       setLoading(true);
      
 
-
-      const response = await axios.post(
-         "http://localhost:5000/api/user/login",
-         {
-            
-            email,
-            password
-         }
-      );
+const response = await axios.post(
+   "http://localhost:5000/api/user/login",
+   {
+      email,
+      password
+   },
+   {
+      withCredentials: true
+   }
+);
 
       setSuccess( response.data.message || response.data);
     
 setEmail("");
 setPassword("");
 navigate("/dashboard")
-   } catch (err) {
-     console.log(err)
-      setError(err.response?.data?.message);
-       
+   } catch(err) {
+
+   if (err.response) {
+
+      setError(
+         err.response.data.message
+      );
+
+   } else if (err.request) {
+
+      setError(
+         "Backend server is not running"
+      );
+
+   } else {
+
+      setError(
+         "Something went wrong"
+      );
+
    }
+
+}
+   
    finally {
 
    setLoading(false);
