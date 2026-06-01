@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router";
-
+import { Link } from "react-router";
 function Dashboard() {
   const navigate = useNavigate();
 
@@ -90,45 +90,128 @@ function Dashboard() {
         </div>
       </div>
 
-      <div className="p-6">
-        <h1 className="text-3xl font-bold">
-          Dashboard
-        </h1>
+      <div className="p-6"><div className="max-w-6xl mx-auto p-6">
 
-        <h2 className="text-xl mt-2">
-          Welcome Back, {user?.name} 👋
-        </h2>
+  <div className="mb-8">
+    <h1 className="text-4xl font-bold">
+      Dashboard
+    </h1>
 
-        <div className="mt-6 bg-base-100 p-4 rounded-lg shadow">
-          <h3 className="text-lg font-semibold mb-3">
-            User Information
-          </h3>
+    <p className="text-base-content/70 mt-2">
+      Welcome back, {user?.name} 👋
+    </p>
+  </div>
 
-          <p>
-            <strong>Name:</strong> {user?.name}
-          </p>
+  <div className="grid lg:grid-cols-2 gap-6">
 
-          <p>
-            <strong>Email:</strong> {user?.email}
-          </p>
-        </div>
+    {/* User Information */}
 
-        <div className="mt-6 bg-base-100 p-4 rounded-lg shadow">
-          <h3 className="text-lg font-semibold mb-3">
-            Profile Status
-          </h3>
+    <div className="bg-base-100 rounded-xl shadow p-6">
 
-          {profile ? (
-            <p className="text-success">
-              ✅ Profile Created
-            </p>
-          ) : (
-            <p className="text-error">
-              ❌ Profile Not Created
-            </p>
-          )}
-        </div>
+      <h2 className="text-xl font-semibold mb-4">
+        User Information
+      </h2>
+
+      <div className="space-y-2">
+
+        <p>
+          <span className="font-medium">
+            Name:
+          </span>{" "}
+          {user?.name}
+        </p>
+
+        <p>
+          <span className="font-medium">
+            Email:
+          </span>{" "}
+          {user?.email}
+        </p>
+
       </div>
+
+    </div>
+
+    {/* Profile Status */}
+
+    <div className="bg-base-100 rounded-xl shadow p-6">
+
+      <h2 className="text-xl font-semibold mb-4">
+        Profile Status
+      </h2>
+
+      {profile ? (
+        <div>
+
+          <p className="text-success mb-4">
+            ✅ Profile Created
+          </p>
+
+          <Link
+            to="/edit-profile"
+            className="btn btn-outline"
+          >
+            Edit Profile
+          </Link>
+
+        </div>
+      ) : (
+        <div>
+
+          <p className="text-error mb-4">
+            ❌ Profile Not Created
+          </p>
+
+          <Link
+            to="/create-profile"
+            className="btn btn-primary"
+          >
+            Create Profile
+          </Link>
+
+        </div>
+      )}
+
+    </div>
+
+  </div>
+
+  {/* Quick Actions */}
+
+  <div className="bg-base-100 rounded-xl shadow p-6 mt-6">
+
+    <h2 className="text-xl font-semibold mb-4">
+      Quick Actions
+    </h2>
+
+    <div className="flex flex-wrap gap-3">
+
+      <button
+        className="btn btn-outline"
+        disabled
+      >
+        My Posts
+      </button>
+
+      <button
+        className="btn btn-outline"
+        disabled
+      >
+        Connections
+      </button>
+
+      <button
+        className="btn btn-outline"
+        disabled
+      >
+        Settings
+      </button>
+
+    </div>
+
+  </div>
+
+</div></div>
     </div>
   );
 }
