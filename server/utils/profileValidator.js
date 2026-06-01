@@ -1,7 +1,7 @@
 const validator = require('validator');
 
 const validateProfileData = (data) => {
-
+console.log('vALIDATOR IS cALLED ')
    const { username, skills, bio } = data;
 
    if (!username) {
