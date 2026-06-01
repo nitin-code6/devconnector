@@ -62,7 +62,33 @@ function Dashboard() {
       console.log(err);
     }
   };
+  const handleDeleteProfile = async () => {
 
+  const confirmDelete = window.confirm(
+    "Are you sure you want to delete your profile?"
+  );
+
+  if (!confirmDelete) return;
+
+  try {
+
+    await axios.delete(
+      "http://localhost:5000/api/profile/delete",
+      {
+        withCredentials: true,
+      }
+    );
+
+    setProfile(null);
+
+    navigate("/dashboard");
+
+  } catch (err) {
+
+    console.log(err);
+
+  }
+};
   if (loading) {
     return (
       <div className="min-h-screen flex justify-center items-center">
@@ -156,7 +182,12 @@ function Dashboard() {
     >
       Edit Profile
     </Link>
-
+  <button
+    className="btn btn-error"
+    onClick={handleDeleteProfile}
+  >
+    Delete Profile
+  </button>
   </div>
 ) : (
   <Link
