@@ -4,6 +4,7 @@ import Dashboard from "./pages/dashboard";
 import CreateProfile from "./pages/createProfile";
 import EditProfile from "./pages/editProfile";
 import Profile from "./pages/Profile";
+import CreatePost from "./pages/createPost";
 import {
   Routes,
   Route
@@ -21,7 +22,8 @@ function App() {
     <Route path="/dashboard"  element={<Dashboard />}/>
 <Route  path="/createProfile"element={<CreateProfile />}/>
 <Route  path="/editProfile"element={<EditProfile/>}/>
-<Route path="/profile/:username" element={<Profile />}
+<Route path="/profile/:username" element={<Profile />}/>
+<Route path="/createPost" element={<CreatePost />}
 />
     </Routes>
 
