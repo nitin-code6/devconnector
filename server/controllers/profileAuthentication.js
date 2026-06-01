@@ -103,6 +103,7 @@ const updateProfile = async (req, res) => {
    try {
 
       const {
+         username,
          bio,
          skills,
          company,
@@ -118,6 +119,7 @@ const updateProfile = async (req, res) => {
             { user: user._id },
 
             {
+               username,
                bio,
                skills,
                company,

@@ -148,7 +148,7 @@ function Dashboard() {
           </p>
 
           <Link
-            to="/edit-profile"
+            to="/editProfile"
             className="btn btn-outline"
           >
             Edit Profile
@@ -163,7 +163,7 @@ function Dashboard() {
           </p>
 
           <Link
-            to="/create-profile"
+            to="/createProfile"
             className="btn btn-primary"
           >
             Create Profile
