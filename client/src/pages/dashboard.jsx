@@ -140,37 +140,32 @@ function Dashboard() {
         Profile Status
       </h2>
 
-      {profile ? (
-        <div>
+    {profile ? (
+  <div className="flex gap-3">
 
-          <p className="text-success mb-4">
-            ✅ Profile Created
-          </p>
+    <Link
+      to={`/profile/${profile.username}`}
+      className="btn btn-primary"
+    >
+      View Profile
+    </Link>
 
-          <Link
-            to="/editProfile"
-            className="btn btn-outline"
-          >
-            Edit Profile
-          </Link>
+    <Link
+      to="/edit-profile"
+      className="btn btn-outline"
+    >
+      Edit Profile
+    </Link>
 
-        </div>
-      ) : (
-        <div>
-
-          <p className="text-error mb-4">
-            ❌ Profile Not Created
-          </p>
-
-          <Link
-            to="/createProfile"
-            className="btn btn-primary"
-          >
-            Create Profile
-          </Link>
-
-        </div>
-      )}
+  </div>
+) : (
+  <Link
+    to="/create-profile"
+    className="btn btn-primary"
+  >
+    Create Profile
+  </Link>
+)}
 
     </div>
 
