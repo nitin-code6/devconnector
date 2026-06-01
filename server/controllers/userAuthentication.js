@@ -114,7 +114,9 @@ const getMe=async(req,res)=>{
   const user=req.result;
   
     if (!user) {
-      throw new Error("Invalid Credentials");
+      return res.status(401).json({
+  message: "Unauthorized"
+});
     }
 
     res.status(200).send({
