@@ -7,6 +7,7 @@ import Profile from "./pages/Profile";
 import CreatePost from "./pages/createPost";
 import MyPosts from "./pages/MyPost";
 import Feed from "./pages/Feed";
+import Navbar from "../src/component/Navbar"
 import {
   Routes,
   Route
@@ -15,7 +16,8 @@ import {
 function App() {
 
   return (
-
+    <>
+    <Navbar/>
     <Routes>
 
       <Route path="/register" element={<Register />}/>
@@ -30,7 +32,7 @@ function App() {
 <Route path="/feed" element={<Feed />}
 />
     </Routes>
-
+</>
   );
 
 }
