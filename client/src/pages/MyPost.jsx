@@ -5,7 +5,11 @@ function MyPosts() {
 
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
+const [editingPostId, setEditingPostId] =
+  useState(null);
 
+const [editContent, setEditContent] =
+  useState("");
   useEffect(() => {
 
     const fetchPosts = async () => {
@@ -68,6 +72,48 @@ const handleDeletePost = async (postId) => {
   }
 
 };
+const handleEditClick = (post) => {
+
+  setEditingPostId(post._id);
+
+  setEditContent(post.content);
+
+};
+const handleUpdatePost = async (
+  postId
+) => {
+
+  try {
+
+    const response = await axios.put(
+      `http://localhost:5000/api/post/${postId}`,
+      {
+        content: editContent
+      },
+      {
+        withCredentials: true
+      }
+    );
+
+    setPosts(
+      posts.map((post) =>
+        post._id === postId
+          ? response.data
+          : post
+      )
+    );
+
+    setEditingPostId(null);
+
+    setEditContent("");
+
+  } catch (err) {
+
+    console.log(err);
+
+  }
+
+};
   if (loading) {
     return (
       <div className="min-h-screen flex justify-center items-center">
@@ -103,9 +149,48 @@ return (
 
             <div className="card-body">
 
-              <p className="text-lg">
-                {post.content}
-              </p>
+              {
+  editingPostId === post._id ? (
+
+    <div>
+
+      <textarea
+        className="textarea textarea-bordered w-full"
+        value={editContent}
+        onChange={(e) =>
+          setEditContent(
+            e.target.value
+          )
+        }
+      />
+
+      <button
+        className="btn btn-primary btn-sm mt-2"
+        onClick={() =>
+          handleUpdatePost(
+            post._id
+          )
+        }
+      >
+        Update
+      </button>
+
+    </div>
+
+  ) : (
+
+    <p>
+      {post.content}
+      {post.edited && (
+  <p className="text-sm text-gray-500 mt-2">
+    Edited
+  </p>
+)}
+    </p>
+    
+    
+  )
+}
 
               <div className="text-sm opacity-60">
 
@@ -121,6 +206,14 @@ return (
   }
 >
   Delete
+</button>
+<button
+  className="btn btn-outline btn-sm"
+  onClick={() =>
+    handleEditClick(post)
+  }
+>
+  Edit
 </button>
             </div>
 
