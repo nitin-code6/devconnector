@@ -6,6 +6,7 @@ import EditProfile from "./pages/editProfile";
 import Profile from "./pages/Profile";
 import CreatePost from "./pages/createPost";
 import MyPosts from "./pages/MyPost";
+import Feed from "./pages/Feed";
 import {
   Routes,
   Route
@@ -26,7 +27,8 @@ function App() {
 <Route path="/profile/:username" element={<Profile />}/>
 <Route path="/createPost" element={<CreatePost />}/>
 <Route path="/myPosts" element={<MyPosts />}/>
-
+<Route path="/feed" element={<Feed />}
+/>
     </Routes>
 
   );
