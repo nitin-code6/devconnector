@@ -36,7 +36,38 @@ function MyPosts() {
     fetchPosts();
 
   }, []);
+const handleDeletePost = async (postId) => {
 
+  const confirmDelete = window.confirm(
+    "Are you sure you want to delete this post?"
+  );
+
+  if (!confirmDelete) {
+    return;
+  }
+
+  try {
+
+    await axios.delete(
+      `http://localhost:5000/api/post/${postId}`,
+      {
+        withCredentials: true
+      }
+    );
+
+    setPosts(
+      posts.filter(
+        post => post._id !== postId
+      )
+    );
+
+  } catch (err) {
+
+    console.log(err);
+
+  }
+
+};
   if (loading) {
     return (
       <div className="min-h-screen flex justify-center items-center">
@@ -83,7 +114,14 @@ return (
                 ).toLocaleString()}
 
               </div>
-
+<button
+  className="btn btn-error btn-sm mt-3"
+  onClick={() =>
+    handleDeletePost(post._id)
+  }
+>
+  Delete
+</button>
             </div>
 
           </div>
