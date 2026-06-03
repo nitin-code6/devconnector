@@ -55,6 +55,7 @@ const [portfolio, setPortfolio] = useState("");
     withCredentials: true
   }
 );
+  console.log(response.data);
         navigate("/dashboard");
       setSuccess("Profile created successfully");
 

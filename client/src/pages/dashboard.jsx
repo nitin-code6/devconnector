@@ -81,7 +81,7 @@ function Dashboard() {
 
     setProfile(null);
 
-    navigate("/dashboard");
+
 
   } catch (err) {
 
@@ -177,7 +177,7 @@ function Dashboard() {
     </Link>
 
     <Link
-      to="/edit-profile"
+      to="/editProfile"
       className="btn btn-outline"
     >
       Edit Profile
@@ -191,7 +191,7 @@ function Dashboard() {
   </div>
 ) : (
   <Link
-    to="/create-profile"
+    to="/createProfile"
     className="btn btn-primary"
   >
     Create Profile
