@@ -119,10 +119,11 @@ const getMe=async(req,res)=>{
 });
     }
 
-    res.status(200).send({
-      name: user.name,
-     email: user.email,
-    });
+ res.status(200).send({
+   _id: user._id,
+   name: user.name,
+   email: user.email,
+});
    }
    catch (err) {
     res.status(401).send("Error: " + err.message);
