@@ -67,7 +67,9 @@ function Navbar() {
       "data-theme",
       newTheme
     );
-
+  window.dispatchEvent(
+    new Event("themeChanged")
+  );
   };
 
   const handleLogout = async () => {
