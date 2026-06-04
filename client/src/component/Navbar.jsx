@@ -96,7 +96,17 @@ function Navbar() {
 
   return (
 
-    <div className="navbar bg-base-100 shadow-md px-6 sticky top-0 z-50">
+    <div className="
+navbar
+bg-base-100/80
+backdrop-blur-lg
+border-b
+border-base-300
+px-6
+sticky
+top-0
+z-50
+">
 
       {/* Logo */}
 
@@ -123,21 +133,33 @@ function Navbar() {
 
         <Link
           to="/feed"
-          className="btn btn-ghost"
+          className="btn
+btn-ghost
+hover:bg-sky-500/10
+hover:text-sky-500
+"
         >
           Home
         </Link>
 
         <Link
           to="/developers"
-          className="btn btn-ghost"
+          className="btn
+btn-ghost
+hover:bg-sky-500/10
+hover:text-sky-500
+btn btn-ghost"
         >
           Developers
         </Link>
 
         <Link
           to="/jobs"
-          className="btn btn-ghost"
+          className="btn
+btn-ghost
+hover:bg-sky-500/10
+hover:text-sky-500
+"
         >
           Jobs
         </Link>
@@ -151,7 +173,11 @@ function Navbar() {
         {/* Theme */}
 
         <button
-          className="btn btn-ghost btn-circle"
+          className="btn
+btn-ghost
+btn-circle
+hover:bg-sky-500/10
+hover:text-sky-500"
           onClick={toggleTheme}
         >
 
@@ -168,7 +194,11 @@ function Navbar() {
         {
           user && (
             <button
-              className="btn btn-ghost btn-circle"
+              className="btn
+btn-ghost
+btn-circle
+hover:bg-sky-500/10
+hover:text-sky-500"
             >
               <FiBell size={20} />
             </button>
@@ -188,7 +218,16 @@ function Navbar() {
                 className="avatar cursor-pointer"
               >
 
-                <div className="w-10 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
+               <div
+  className="
+  w-10
+  rounded-full
+  ring
+  ring-sky-500/50
+  ring-offset-base-100
+  ring-offset-2
+  "
+>
 
                   <img
                     src={
@@ -204,7 +243,20 @@ function Navbar() {
 
               <ul
                 tabIndex={0}
-                className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-56"
+               className="
+menu
+menu-sm
+dropdown-content
+mt-3
+p-2
+shadow-xl
+bg-base-100/95
+backdrop-blur-lg
+rounded-2xl
+border
+border-base-300
+w-56
+"
               >
 
                 <li>
@@ -247,12 +299,19 @@ function Navbar() {
 
           ) : (
 
-            <Link
-              to="/login"
-              className="btn btn-primary"
-            >
-              Sign In
-            </Link>
+         <Link
+  to="/login"
+  className="
+  btn
+  bg-sky-500
+  hover:bg-sky-600
+  border-0
+  text-white
+  shadow-md
+  "
+>
+  Sign In
+</Link>
 
           )
         }
