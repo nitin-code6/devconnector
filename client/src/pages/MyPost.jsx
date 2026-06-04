@@ -1,6 +1,9 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { Link } from "react-router";
+
+
+import FeedRightbar from "../component/FeedRightbar";
 function MyPosts() {
 
   const [posts, setPosts] = useState([]);
@@ -127,162 +130,243 @@ return (
 
 <div className="min-h-screen bg-base-200 py-8">
 
-  <div className="max-w-5xl mx-auto px-4">
+  <div className="max-w-7xl mx-auto px-4">
 
-    {/* Header */}
+    <div className="grid lg:grid-cols-12 gap-6">
 
-    <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8">
+      {/* MAIN CONTENT */}
 
-      <div>
+      <div className="lg:col-span-8">
 
-        <h1 className="text-4xl font-bold">
+        {/* Header */}
 
-          My
+        <div className="flex justify-between items-center mb-8">
 
-          <span className="text-lime-500 ml-2">
-            Posts
-          </span>
+          <div>
 
-        </h1>
+            <h1 className="text-4xl font-bold">
 
-        <p className="text-base-content/60 mt-2">
+              My
 
-          Manage and update your published posts.
+              <span className="text-lime-500 ml-2">
+                Posts
+              </span>
 
-        </p>
+            </h1>
 
-      </div>
+            <p className="text-base-content/60 mt-2">
 
-      <Link
-        to="/create-post"
-        className="
-        btn
-        border-0
-        text-white
-        bg-gradient-to-r
-        from-sky-500
-        to-lime-500
-        hover:from-sky-600
-        hover:to-lime-600
-        "
-      >
-        + Create Post
-      </Link>
+              Manage and update your published posts.
 
-    </div>
+            </p>
 
-    {posts.length === 0 ? (
+          </div>
 
-      <div
-        className="
-        card
-        bg-base-100
-        shadow-lg
-        border
-        border-base-300
-        "
-      >
-
-        <div className="card-body text-center">
-
-          <h2 className="text-2xl font-bold">
-            No Posts Yet
-          </h2>
-
-          <p className="opacity-70">
-
-            Start sharing your thoughts with the community.
-
-          </p>
+          <Link
+            to="/createPost"
+            className="
+            btn
+            border-0
+            text-white
+            bg-gradient-to-r
+            from-sky-500
+            to-lime-500
+            hover:from-sky-600
+            hover:to-lime-600
+            "
+          >
+            + Create Post
+          </Link>
 
         </div>
 
-      </div>
+        {/* Empty State */}
 
-    ) : (
+        {posts.length === 0 ? (
 
-      <div className="space-y-5">
+          <div className="card bg-base-100 shadow-lg">
 
-        {posts.map((post) => (
+            <div className="card-body text-center">
 
-          <div
-            key={post._id}
-            className="
-            bg-base-100
-            rounded-2xl
-            shadow-md
-            border
-            border-base-300
-            hover:shadow-xl
-            transition-all
-            "
-          >
+              <h2 className="text-2xl font-bold">
 
-            <div className="p-6">
+                No Posts Yet
 
-              {editingPostId === post._id ? (
+              </h2>
 
-                <div>
+              <p className="opacity-70">
 
-                  <textarea
-                    className="
-                    textarea
-                    textarea-bordered
-                    w-full
-                    h-32
-                    "
-                    value={editContent}
-                    onChange={(e) =>
-                      setEditContent(
-                        e.target.value
-                      )
-                    }
-                  />
+                Start sharing with the community.
 
-                  <div className="mt-3 flex gap-2">
+              </p>
 
-                    <button
-                      className="
-                      btn
-                      border-0
-                      text-white
-                      bg-gradient-to-r
-                      from-sky-500
-                      to-lime-500
-                      "
-                      onClick={() =>
-                        handleUpdatePost(
-                          post._id
-                        )
-                      }
-                    >
-                      Save Changes
-                    </button>
+            </div>
 
-                    <button
-                      className="btn btn-outline"
-                      onClick={() =>
-                        setEditingPostId(
-                          null
-                        )
-                      }
-                    >
-                      Cancel
-                    </button>
+          </div>
 
-                  </div>
+        ) : (
 
-                </div>
+          <div className="space-y-5">
 
-              ) : (
+            {posts.map((post) => (
 
-                <>
+              <div
+                key={post._id}
+                className="
+                card
+                bg-base-100
+                shadow-md
+                border
+                border-base-300
+                hover:shadow-xl
+                transition-all
+                "
+              >
 
-                  <div className="flex justify-between items-start">
+                <div className="card-body">
+
+                  {/* Header */}
+
+                  <div className="flex justify-between">
 
                     <div>
 
-                      <p className="leading-7">
+                      <h2 className="font-bold text-lg">
+
+                        Your Post
+
+                      </h2>
+
+                      <p className="text-sm opacity-60">
+
+                        {new Date(
+                          post.createdAt
+                        ).toLocaleString()}
+
+                      </p>
+
+                    </div>
+
+                    {/* Dropdown */}
+
+                    <div className="dropdown dropdown-end">
+
+                      <label
+                        tabIndex={0}
+                        className="btn btn-ghost btn-sm"
+                      >
+                        ⋮
+                      </label>
+
+                      <ul
+                        tabIndex={0}
+                        className="
+                        dropdown-content
+                        menu
+                        p-2
+                        shadow
+                        bg-base-100
+                        rounded-box
+                        w-40
+                        border
+                        border-base-300
+                        "
+                      >
+
+                        <li>
+
+                          <button
+                            onClick={() =>
+                              handleEditClick(post)
+                            }
+                          >
+                            Edit Post
+                          </button>
+
+                        </li>
+
+                        <li>
+
+                          <button
+                            className="text-error"
+                            onClick={() =>
+                              handleDeletePost(
+                                post._id
+                              )
+                            }
+                          >
+                            Delete Post
+                          </button>
+
+                        </li>
+
+                      </ul>
+
+                    </div>
+
+                  </div>
+
+                  {/* Content */}
+
+                  {editingPostId === post._id ? (
+
+                    <div>
+
+                      <textarea
+                        className="
+                        textarea
+                        textarea-bordered
+                        w-full
+                        h-32
+                        "
+                        value={editContent}
+                        onChange={(e) =>
+                          setEditContent(
+                            e.target.value
+                          )
+                        }
+                      />
+
+                      <div className="flex gap-2 mt-3">
+
+                        <button
+                          className="
+                          btn
+                          border-0
+                          text-white
+                          bg-gradient-to-r
+                          from-sky-500
+                          to-lime-500
+                          "
+                          onClick={() =>
+                            handleUpdatePost(
+                              post._id
+                            )
+                          }
+                        >
+                          Save
+                        </button>
+
+                        <button
+                          className="btn btn-outline"
+                          onClick={() =>
+                            setEditingPostId(
+                              null
+                            )
+                          }
+                        >
+                          Cancel
+                        </button>
+
+                      </div>
+
+                    </div>
+
+                  ) : (
+
+                    <>
+
+                      <p className="leading-7 mt-3">
 
                         {post.content}
 
@@ -290,76 +374,104 @@ return (
 
                       {post.edited && (
 
-                        <span
-                          className="
-                          badge
-                          badge-sm
-                          bg-sky-500
-                          text-white
-                          border-0
-                          mt-3
-                          "
-                        >
-                          Edited
-                        </span>
+                        <div className="mt-3">
+
+                          <span
+                            className="
+                            badge
+                            bg-lime-500
+                            text-white
+                            border-0
+                            "
+                          >
+                            Edited
+                          </span>
+
+                        </div>
 
                       )}
 
-                    </div>
+                    </>
+
+                  )}
+
+                  {/* Footer */}
+
+                  <div
+                    className="
+                    flex
+                    items-center
+                    justify-around
+                    border-t
+                    border-base-300
+                    pt-3
+                    mt-4
+                    "
+                  >
+
+                    <button
+                      className="
+                      btn
+                      btn-ghost
+                      btn-sm
+                      gap-2
+                      "
+                    >
+                      ❤️
+                      <span>
+                        {post.likes?.length || 0}
+                      </span>
+                    </button>
+
+                    <button
+                      className="
+                      btn
+                      btn-ghost
+                      btn-sm
+                      gap-2
+                      "
+                    >
+                      💬
+                      <span>
+                        {post.comments?.length || 0}
+                      </span>
+                    </button>
+
+                    <button
+                      className="
+                      btn
+                      btn-ghost
+                      btn-sm
+                      gap-2
+                      "
+                    >
+                      ↗
+                      <span>Share</span>
+                    </button>
 
                   </div>
-
-                </>
-
-              )}
-
-              <div className="divider my-4"></div>
-
-              <div className="flex flex-col md:flex-row justify-between gap-4">
-
-                <div className="text-sm opacity-60">
-
-                  {new Date(
-                    post.createdAt
-                  ).toLocaleString()}
-
-                </div>
-
-                <div className="flex gap-2">
-
-                  <button
-                    className="btn btn-outline btn-sm"
-                    onClick={() =>
-                      handleEditClick(post)
-                    }
-                  >
-                    Edit
-                  </button>
-
-                  <button
-                    className="btn btn-error btn-sm"
-                    onClick={() =>
-                      handleDeletePost(
-                        post._id
-                      )
-                    }
-                  >
-                    Delete
-                  </button>
 
                 </div>
 
               </div>
 
-            </div>
+            ))}
 
           </div>
 
-        ))}
+        )}
 
       </div>
 
-    )}
+      {/* RIGHT SIDEBAR */}
+
+      <div className="lg:col-span-4">
+
+        <FeedRightbar />
+
+      </div>
+
+    </div>
 
   </div>
 
