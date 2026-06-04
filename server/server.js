@@ -1,11 +1,14 @@
 const express = require('express');
 const dotenv = require('dotenv');
+
 const connectDB = require('./config/db');
 const cors=require('cors')
 // Load environment variables from .env
 const cookieParser = require('cookie-parser');
 dotenv.config();
 const client=require('./config/redis');
+// server.js
+require("./config/cloudinary");
 const userAuthRoutes = require('./Routes/userAuth');
 const profileRoutes = require('./Routes/profile');
 const postRoutes=require('./Routes/post');

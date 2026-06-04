@@ -2,6 +2,8 @@ const User=require('../model/user');
 const bcrypt=require('bcrypt');
 const jwt=require('jsonwebtoken');
 const redis_client = require('../config/redis');
+const cloudinary = require("../config/cloudinary");
+
 const {validateRegisterData
 } = require('../utils/authValidator');
 const register = async (req,res) => {
@@ -123,11 +125,38 @@ const getMe=async(req,res)=>{
    _id: user._id,
    name: user.name,
    email: user.email,
+   avatar:user.avatar,
 });
    }
    catch (err) {
     res.status(401).send("Error: " + err.message);
   }
 };
+const uploadAvatar = async (req, res) => {
 
-module.exports = {register,login,logout,getMe};
+   try {
+
+      const result = await cloudinary.uploader.upload(
+         req.file.path
+      );
+      const user=req.result;
+       console.log("upload", user);
+      user.avatar = result.secure_url;
+
+      await user.save();
+
+      return res.json({
+         message: "Avatar Updated",
+         avatar: result.secure_url
+      });
+
+   } catch(err) {
+
+      return res.status(500).json({
+         message: err.message
+      });
+
+   }
+
+};
+module.exports = {register,login,logout,getMe,uploadAvatar};
