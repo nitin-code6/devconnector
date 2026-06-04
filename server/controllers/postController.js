@@ -36,9 +36,9 @@ const getPosts = async (req, res) => {
  
 const posts = await Post.find()
    .populate("user", "name")
+  .populate("comments.user", "name")
    .sort({ createdAt: -1 });
-      res.status(200).json(posts);
-
+       res.status(200).json(posts);
    } catch (err) {
 
       res.status(500).json({
@@ -153,7 +153,12 @@ const likePost = async (req, res) => {
 
       await post.save();
 
-      res.status(200).json(post);
+const updatedPost =
+  await Post.findById(post._id)
+    .populate("user", "name")
+    .populate("comments.user", "name");
+
+res.status(200).json(updatedPost);
 
    } catch (err) {
 
@@ -202,9 +207,14 @@ const unlikePost = async (req, res) => {
             user._id.toString()
       );
 
-      await post.save();
+await post.save();
 
-      res.status(200).json(post);
+const updatedPost =
+  await Post.findById(post._id)
+    .populate("user", "name")
+    .populate("comments.user", "name");
+
+res.status(200).json(updatedPost);
 
    } catch (err) {
 
@@ -244,9 +254,14 @@ const addComment = async (req, res) => {
          text
       });
 
-      await post.save();
+     await post.save();
 
-      res.status(201).json(post);
+const updatedPost =
+  await Post.findById(post._id)
+    .populate("user", "name")
+    .populate("comments.user", "name");
+
+res.status(201).json(updatedPost);
 
    } catch (err) {
 
@@ -303,10 +318,14 @@ const deleteComment = async (req, res) => {
       }
 
       comment.deleteOne();
+await post.save();
 
-      await post.save();
+const updatedPost =
+  await Post.findById(post._id)
+    .populate("user", "name")
+    .populate("comments.user", "name");
 
-      res.status(200).json(post);
+res.status(201).json(updatedPost);
 
    } catch (err) {
 
@@ -374,10 +393,14 @@ const updatePost = async (req,res)=>{
       post.content = content;
 
       post.edited = true;
+await post.save();
 
-      await post.save();
+const updatedPost =
+  await Post.findById(post._id)
+    .populate("user", "name")
+    .populate("comments.user", "name");
 
-      res.status(200).json(post);
+res.status(200).json(updatedPost);
 
    }
    catch(err){
