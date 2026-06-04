@@ -8,6 +8,7 @@ import CreatePost from "./pages/createPost";
 import MyPosts from "./pages/MyPost";
 import Feed from "./pages/Feed";
 import Navbar from "../src/component/Navbar"
+import MyProfile from "./pages/MyProfile";
 import {
   Routes,
   Route
@@ -31,6 +32,7 @@ function App() {
 <Route path="/myPosts" element={<MyPosts />}/>
 <Route path="/feed" element={<Feed />}
 />
+<Route path="/profile/me" element={<MyProfile />}/>
     </Routes>
 </>
   );

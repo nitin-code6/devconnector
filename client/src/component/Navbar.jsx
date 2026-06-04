@@ -1,190 +1,266 @@
 import { Link } from "react-router";
-  import { useEffect, useState } from "react";
-  import logo from "../assets/logo.png";
-  import axios from "axios";
+import { useEffect, useState } from "react";
+import axios from "axios";
+
+import logo from "../assets/logo.png";
+import defaultAvatar from "../assets/icon.png";
+
+import { FiMoon, FiSun, FiBell } from "react-icons/fi";
+
 function Navbar() {
-  const [user, setUser] =
-  useState(null);
-const [theme, setTheme] = useState("light");
-useEffect(() => {
-const fetchUser = async () => {
 
-  try {
+  const [user, setUser] = useState(null);
+  const [theme, setTheme] = useState("light");
 
-    const response =
-      await axios.get(
-        "http://localhost:5000/api/user/me",
+  useEffect(() => {
+
+    const fetchUser = async () => {
+
+      try {
+
+        const response = await axios.get(
+          "http://localhost:5000/api/user/me",
+          {
+            withCredentials: true
+          }
+        );
+
+        setUser(response.data);
+
+      } catch {
+
+        setUser(null);
+
+      }
+
+    };
+
+    fetchUser();
+
+    const savedTheme =
+      localStorage.getItem("theme") || "light";
+
+    setTheme(savedTheme);
+
+    document.documentElement.setAttribute(
+      "data-theme",
+      savedTheme
+    );
+
+  }, []);
+
+  const toggleTheme = () => {
+
+    const newTheme =
+      theme === "light"
+        ? "dark"
+        : "light";
+
+    setTheme(newTheme);
+
+    localStorage.setItem(
+      "theme",
+      newTheme
+    );
+
+    document.documentElement.setAttribute(
+      "data-theme",
+      newTheme
+    );
+
+  };
+
+  const handleLogout = async () => {
+
+    try {
+
+      await axios.post(
+        "http://localhost:5000/api/user/logout",
+        {},
         {
           withCredentials: true
         }
       );
 
-    setUser(response.data);
+      setUser(null);
 
-  } catch {
+    } catch (err) {
 
-    setUser(null);
+      console.log(err);
 
-  }
+    }
 
-};
-fetchUser();
-  const savedTheme =
-    localStorage.getItem("theme")
-    || "light";
+  };
 
-  setTheme(savedTheme);
+  return (
 
-  document.documentElement.setAttribute(
-    "data-theme",
-    savedTheme
-  );
+    <div className="navbar bg-base-100 shadow-md px-6 sticky top-0 z-50">
 
-}, []);
-const toggleTheme = () => {
+      {/* Logo */}
 
-  const newTheme =
-    theme === "light"
-      ? "dark"
-      : "light";
+      <div className="flex-1">
 
-  setTheme(newTheme);
+        <Link
+          to="/"
+          className="flex items-center"
+        >
 
-  localStorage.setItem(
-    "theme",
-    newTheme
-  );
+          <img
+            src={logo}
+            alt="DevConnector"
+            className="h-14 w-auto"
+          />
 
-  document.documentElement.setAttribute(
-    "data-theme",
-    newTheme
-  );
+        </Link>
 
-};
-const handleLogout = async () => {
+      </div>
 
-  try {
+      {/* Center Menu */}
 
-    await axios.post(
-      "http://localhost:5000/api/user/logout",
-      {},
-      {
-        withCredentials: true,
-      }
-    );
+      <div className="hidden md:flex gap-2">
 
-    setUser(null);
+        <Link
+          to="/feed"
+          className="btn btn-ghost"
+        >
+          Home
+        </Link>
 
-  } catch (err) {
+        <Link
+          to="/developers"
+          className="btn btn-ghost"
+        >
+          Developers
+        </Link>
 
-    console.log(err);
+        <Link
+          to="/jobs"
+          className="btn btn-ghost"
+        >
+          Jobs
+        </Link>
 
-  }
+      </div>
 
-};
-  return (<div className="navbar bg-base-100 shadow-md px-6 sticky top-0 z-50 min-h-16">
+      {/* Right Side */}
 
-  <div className="flex-1">
+      <div className="flex items-center gap-2">
 
-    <Link
-  to="/"
-  className="flex items-center gap-3"
+        {/* Theme */}
+
+        <button
+          className="btn btn-ghost btn-circle"
+          onClick={toggleTheme}
+        >
+
+          {
+            theme === "light"
+              ? <FiMoon size={20} />
+              : <FiSun size={20} />
+          }
+
+        </button>
+
+        {/* Notification */}
+
+        {
+          user && (
+            <button
+              className="btn btn-ghost btn-circle"
+            >
+              <FiBell size={20} />
+            </button>
+          )
+        }
+
+        {/* User Menu */}
+
+        {
+          user ? (
+
+            <div className="dropdown dropdown-end">
+
+              <div
+                tabIndex={0}
+                role="button"
+                className="avatar cursor-pointer"
+              >
+
+                <div className="w-10 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
+
+                  <img
+                    src={
+                      user.avatar ||
+                      defaultAvatar
+                    }
+                    alt="Profile"
+                  />
+
+                </div>
+
+              </div>
+
+              <ul
+                tabIndex={0}
+                className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-56"
+              >
+
+                <li>
+                  <Link to="/dashboard">
+                    Dashboard
+                  </Link>
+                </li>
+
+                <li>
+                  <Link
+  to="/profile/me"
 >
-<img
-  src={logo}
-  alt="DevConnector"
-  className="h-20 w-auto object-contain"
-/>
-
-
+  My Profile
 </Link>
+                </li>
 
-  </div>
+                <li>
+                  <Link to="/editProfile">
+                    Edit Profile
+                  </Link>
+                </li>
 
-  <div className="hidden md:flex">
+                <li>
+                  <Link to="/myPosts">
+                    My Posts
+                  </Link>
+                </li>
 
-    <input
-      type="text"
-      placeholder="Search developers..."
-      className="input input-bordered w-72"
-    />
+                <li>
+                  <button
+                    onClick={handleLogout}
+                  >
+                    Logout
+                  </button>
+                </li>
 
-  </div>
+              </ul>
 
-  <div className="flex items-center gap-2 ml-4">
+            </div>
 
-    <Link
-      to="/feed"
-      className="btn btn-ghost"
-    >
-      Feed
-    </Link>
+          ) : (
 
-    <Link
-      to="/developers"
-      className="btn btn-ghost"
-    >
-      Developers
-    </Link>
+            <Link
+              to="/login"
+              className="btn btn-primary"
+            >
+              Sign In
+            </Link>
 
- <button
-  className="btn btn-ghost"
-  onClick={toggleTheme}
->
-  {theme === "light"
-    ? "Dark"
-    : "Light"}
-</button>
+          )
+        }
 
-  {user ? (
+      </div>
 
-  <>
+    </div>
 
-    <Link
-      to="/dashboard"
-      className="btn btn-ghost"
-    >
-      Dashboard
-    </Link>
+  );
 
-    <Link
-      to="/my-posts"
-      className="btn btn-ghost"
-    >
-      My Posts
-    </Link>
-
-    <Link
-      to={`/profile/${user.name}`}
-      className="btn btn-ghost"
-    >
-      Profile
-    </Link>
-     <button
-  className="btn btn-error"
-  onClick={handleLogout}
->
-  Logout
-</button>
-  </>
-
-) : (
-
-  <>
-    <Link
-      to="/login"
-      className="btn btn-primary"
-    >
-      Sign In
-    </Link>
-
-  </>
-
-)}
-
-  </div>
-
-</div> );
 }
 
 export default Navbar;

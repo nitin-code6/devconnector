@@ -55,7 +55,7 @@ const getMyProfile = async (req, res) => {
       console.log(user);
       const profile = await Profile.findOne({
         user:user._id
-      });
+      }).populate("user");
 
       if (!profile) {
 
