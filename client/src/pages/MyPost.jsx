@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-
+import { Link } from "react-router";
 function MyPosts() {
 
   const [posts, setPosts] = useState([]);
@@ -124,108 +124,247 @@ const handleUpdatePost = async (
 
 
 return (
-  <div className="min-h-screen bg-base-200 p-6">
 
-    <div className="max-w-4xl mx-auto">
+<div className="min-h-screen bg-base-200 py-8">
 
-      <h1 className="text-3xl font-bold mb-6">
-        My Posts
-      </h1>
+  <div className="max-w-5xl mx-auto px-4">
 
-      {posts.length === 0 ? (
+    {/* Header */}
 
-        <div className="alert">
-          <span>No posts found</span>
-        </div>
+    <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8">
 
-      ) : (
+      <div>
 
-        posts.map((post) => (
+        <h1 className="text-4xl font-bold">
 
-          <div
-            key={post._id}
-            className="card bg-base-100 shadow mb-4"
-          >
+          My
 
-            <div className="card-body">
+          <span className="text-lime-500 ml-2">
+            Posts
+          </span>
 
-              {
-  editingPostId === post._id ? (
+        </h1>
 
-    <div>
+        <p className="text-base-content/60 mt-2">
 
-      <textarea
-        className="textarea textarea-bordered w-full"
-        value={editContent}
-        onChange={(e) =>
-          setEditContent(
-            e.target.value
-          )
-        }
-      />
+          Manage and update your published posts.
 
-      <button
-        className="btn btn-primary btn-sm mt-2"
-        onClick={() =>
-          handleUpdatePost(
-            post._id
-          )
-        }
+        </p>
+
+      </div>
+
+      <Link
+        to="/create-post"
+        className="
+        btn
+        border-0
+        text-white
+        bg-gradient-to-r
+        from-sky-500
+        to-lime-500
+        hover:from-sky-600
+        hover:to-lime-600
+        "
       >
-        Update
-      </button>
+        + Create Post
+      </Link>
 
     </div>
 
-  ) : (
+    {posts.length === 0 ? (
 
-    <p>
-      {post.content}
-      {post.edited && (
-  <p className="text-sm text-gray-500 mt-2">
-    Edited
-  </p>
-)}
-    </p>
-    
-    
-  )
-}
+      <div
+        className="
+        card
+        bg-base-100
+        shadow-lg
+        border
+        border-base-300
+        "
+      >
 
-              <div className="text-sm opacity-60">
+        <div className="card-body text-center">
 
-                {new Date(
-                  post.createdAt
-                ).toLocaleString()}
+          <h2 className="text-2xl font-bold">
+            No Posts Yet
+          </h2>
+
+          <p className="opacity-70">
+
+            Start sharing your thoughts with the community.
+
+          </p>
+
+        </div>
+
+      </div>
+
+    ) : (
+
+      <div className="space-y-5">
+
+        {posts.map((post) => (
+
+          <div
+            key={post._id}
+            className="
+            bg-base-100
+            rounded-2xl
+            shadow-md
+            border
+            border-base-300
+            hover:shadow-xl
+            transition-all
+            "
+          >
+
+            <div className="p-6">
+
+              {editingPostId === post._id ? (
+
+                <div>
+
+                  <textarea
+                    className="
+                    textarea
+                    textarea-bordered
+                    w-full
+                    h-32
+                    "
+                    value={editContent}
+                    onChange={(e) =>
+                      setEditContent(
+                        e.target.value
+                      )
+                    }
+                  />
+
+                  <div className="mt-3 flex gap-2">
+
+                    <button
+                      className="
+                      btn
+                      border-0
+                      text-white
+                      bg-gradient-to-r
+                      from-sky-500
+                      to-lime-500
+                      "
+                      onClick={() =>
+                        handleUpdatePost(
+                          post._id
+                        )
+                      }
+                    >
+                      Save Changes
+                    </button>
+
+                    <button
+                      className="btn btn-outline"
+                      onClick={() =>
+                        setEditingPostId(
+                          null
+                        )
+                      }
+                    >
+                      Cancel
+                    </button>
+
+                  </div>
+
+                </div>
+
+              ) : (
+
+                <>
+
+                  <div className="flex justify-between items-start">
+
+                    <div>
+
+                      <p className="leading-7">
+
+                        {post.content}
+
+                      </p>
+
+                      {post.edited && (
+
+                        <span
+                          className="
+                          badge
+                          badge-sm
+                          bg-sky-500
+                          text-white
+                          border-0
+                          mt-3
+                          "
+                        >
+                          Edited
+                        </span>
+
+                      )}
+
+                    </div>
+
+                  </div>
+
+                </>
+
+              )}
+
+              <div className="divider my-4"></div>
+
+              <div className="flex flex-col md:flex-row justify-between gap-4">
+
+                <div className="text-sm opacity-60">
+
+                  {new Date(
+                    post.createdAt
+                  ).toLocaleString()}
+
+                </div>
+
+                <div className="flex gap-2">
+
+                  <button
+                    className="btn btn-outline btn-sm"
+                    onClick={() =>
+                      handleEditClick(post)
+                    }
+                  >
+                    Edit
+                  </button>
+
+                  <button
+                    className="btn btn-error btn-sm"
+                    onClick={() =>
+                      handleDeletePost(
+                        post._id
+                      )
+                    }
+                  >
+                    Delete
+                  </button>
+
+                </div>
 
               </div>
-<button
-  className="btn btn-error btn-sm mt-3"
-  onClick={() =>
-    handleDeletePost(post._id)
-  }
->
-  Delete
-</button>
-<button
-  className="btn btn-outline btn-sm"
-  onClick={() =>
-    handleEditClick(post)
-  }
->
-  Edit
-</button>
+
             </div>
 
           </div>
 
-        ))
+        ))}
 
-      )}
+      </div>
 
-    </div>
+    )}
 
   </div>
+
+</div>
+
 );
  
 }

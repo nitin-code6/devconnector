@@ -98,148 +98,339 @@ function Dashboard() {
   }
 
   return (
-    <div className="min-h-screen bg-base-200">
-      <div className="navbar bg-base-100 shadow">
-        <div className="flex-1">
-          <h1 className="text-xl font-bold">
-            DevConnector
-          </h1>
-        </div>
 
-        <div>
-          <button
-            className="btn btn-outline btn-sm"
-            onClick={handleLogout}
-          >
-            Logout
-          </button>
-        </div>
-      </div>
+<div className="min-h-screen bg-base-200">
 
-      <div className="p-6"><div className="max-w-6xl mx-auto p-6">
+  <div className="max-w-6xl mx-auto p-6">
 
-  <div className="mb-8">
-    <h1 className="text-4xl font-bold">
-      Dashboard
-    </h1>
+    {/* Header */}
 
-    <p className="text-base-content/70 mt-2">
-      Welcome back, {user?.name} 👋
-    </p>
-  </div>
+    <div className="mb-8">
 
-  <div className="grid lg:grid-cols-2 gap-6">
+      <h1 className="text-4xl font-bold">
 
-    {/* User Information */}
+        Welcome Back,
 
-    <div className="bg-base-100 rounded-xl shadow p-6">
-
-      <h2 className="text-xl font-semibold mb-4">
-        User Information
-      </h2>
-
-      <div className="space-y-2">
-
-        <p>
-          <span className="font-medium">
-            Name:
-          </span>{" "}
+        <span className="text-lime-500 ml-2">
           {user?.name}
-        </p>
+        </span>
 
-        <p>
-          <span className="font-medium">
-            Email:
-          </span>{" "}
-          {user?.email}
-        </p>
+      </h1>
+
+      <p className="text-base-content/70 mt-2">
+
+        Manage your profile, posts and
+        developer activity.
+
+      </p>
+
+    </div>
+
+    {/* Top Cards */}
+
+    <div className="grid md:grid-cols-3 gap-6">
+
+      {/* User Card */}
+
+      <div
+        className="
+        card
+        bg-base-100
+        shadow-lg
+        border
+        border-base-300
+        "
+      >
+
+        <div className="card-body">
+
+          <h2 className="card-title">
+            Account
+          </h2>
+
+          <p>
+            <strong>Name:</strong>
+            {" "}
+            {user?.name}
+          </p>
+
+          <p>
+            <strong>Email:</strong>
+            {" "}
+            {user?.email}
+          </p>
+
+        </div>
+
+      </div>
+
+      {/* Profile Status */}
+
+      <div
+        className="
+        card
+        bg-base-100
+        shadow-lg
+        border
+        border-base-300
+        "
+      >
+
+        <div className="card-body">
+
+          <h2 className="card-title">
+            Profile
+          </h2>
+
+          <p>
+
+            {profile
+              ? "Profile Completed ✅"
+              : "Profile Not Created ❌"}
+
+          </p>
+
+        </div>
+
+      </div>
+
+      {/* Posts */}
+
+      <div
+        className="
+        card
+        bg-base-100
+        shadow-lg
+        border
+        border-base-300
+        "
+      >
+
+        <div className="card-body">
+
+          <h2 className="card-title">
+            Activity
+          </h2>
+
+          <p>
+            Start sharing your projects
+            and ideas with the community.
+          </p>
+
+        </div>
 
       </div>
 
     </div>
 
-    {/* Profile Status */}
+    {/* Main Actions */}
 
-    <div className="bg-base-100 rounded-xl shadow p-6">
-
-      <h2 className="text-xl font-semibold mb-4">
-        Profile Status
-      </h2>
-
-    {profile ? (
-  <div className="flex gap-3">
-
-    <Link
-      to={`/profile/${profile.username}`}
-      className="btn btn-primary"
+    <div
+      className="
+      card
+      bg-base-100
+      shadow-lg
+      border
+      border-base-300
+      mt-6
+      "
     >
-      View Profile
-    </Link>
 
-    <Link
-      to="/editProfile"
-      className="btn btn-outline"
-    >
-      Edit Profile
-    </Link>
-  <button
-    className="btn btn-error"
-    onClick={handleDeleteProfile}
-  >
-    Delete Profile
-  </button>
-  </div>
-) : (
-  <Link
-    to="/createProfile"
-    className="btn btn-primary"
-  >
-    Create Profile
-  </Link>
-)}
+      <div className="card-body">
+
+        <h2 className="text-2xl font-bold">
+
+          Quick Actions
+
+        </h2>
+
+        <div className="flex flex-wrap gap-3 mt-4">
+
+          {profile ? (
+
+            <>
+
+              <Link
+                to={`/profile/${profile.username}`}
+                className="
+                btn
+                bg-sky-500
+                hover:bg-sky-600
+                text-white
+                border-0
+                "
+              >
+                View Profile
+              </Link>
+
+              <Link
+                to="/editProfile"
+                className="btn btn-outline"
+              >
+                Edit Profile
+              </Link>
+
+              <Link
+                to="/create-post"
+                className="
+                btn
+                bg-lime-500
+                hover:bg-lime-600
+                text-white
+                border-0
+                "
+              >
+                Create Post
+              </Link>
+
+              <Link
+                to="/myPosts"
+                className="btn btn-outline"
+              >
+                My Posts
+              </Link>
+
+              <button
+                className="btn btn-error"
+                onClick={handleDeleteProfile}
+              >
+                Delete Profile
+              </button>
+
+            </>
+
+          ) : (
+
+            <Link
+              to="/createProfile"
+              className="
+              btn
+              bg-sky-500
+              hover:bg-sky-600
+              text-white
+              border-0
+              "
+            >
+              Create Profile
+            </Link>
+
+          )}
+
+        </div>
+
+      </div>
+
+    </div>
+
+    {/* Navigation Cards */}
+
+    <div className="grid md:grid-cols-3 gap-6 mt-6">
+
+      <Link
+        to="/feed"
+        className="
+        card
+        bg-base-100
+        shadow-md
+        border
+        border-base-300
+        hover:shadow-xl
+        transition
+        "
+      >
+
+        <div className="card-body">
+
+          <h3 className="font-bold text-xl">
+            Feed
+          </h3>
+
+          <p>
+            Explore community posts.
+          </p>
+
+        </div>
+
+      </Link>
+
+      <Link
+        to="/developers"
+        className="
+        card
+        bg-base-100
+        shadow-md
+        border
+        border-base-300
+        hover:shadow-xl
+        transition
+        "
+      >
+
+        <div className="card-body">
+
+          <h3 className="font-bold text-xl">
+            Developers
+          </h3>
+
+          <p>
+            Discover developer profiles.
+          </p>
+
+        </div>
+
+      </Link>
+
+      <Link
+        to="/jobs"
+        className="
+        card
+        bg-base-100
+        shadow-md
+        border
+        border-base-300
+        hover:shadow-xl
+        transition
+        "
+      >
+
+        <div className="card-body">
+
+          <h3 className="font-bold text-xl">
+            Jobs
+          </h3>
+
+          <p>
+            Find opportunities.
+          </p>
+
+        </div>
+
+      </Link>
+
+    </div>
+
+    {/* Logout */}
+
+    <div className="mt-8">
+
+      <button
+        onClick={handleLogout}
+        className="
+        btn
+        btn-outline
+        btn-error
+        "
+      >
+        Logout
+      </button>
 
     </div>
 
   </div>
 
-  {/* Quick Actions */}
+</div>
 
-  <div className="bg-base-100 rounded-xl shadow p-6 mt-6">
-
-    <h2 className="text-xl font-semibold mb-4">
-      Quick Actions
-    </h2>
-
-    <div className="flex flex-wrap gap-3">
-
-      <button
-        className="btn btn-outline"
-        disabled
-      >
-        My Posts
-      </button>
-
-      <button
-        className="btn btn-outline"
-        disabled
-      >
-        Connections
-      </button>
-
-      <button
-        className="btn btn-outline"
-        disabled
-      >
-        Settings
-      </button>
-
-    </div>
-
-  </div>
-
-</div></div>
-    </div>
-  );
+);
 }
 
 export default Dashboard;
