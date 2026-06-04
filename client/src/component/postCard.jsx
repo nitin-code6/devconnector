@@ -1,5 +1,6 @@
 import { useState } from "react";
-import defaultAvatar from "../../src/assets/default_profile.png"
+import defaultAvatar from "../assets/default_profile.png";
+
 function PostCard({
   post,
   user,
@@ -10,13 +11,11 @@ function PostCard({
   commentText,
   setCommentText,
 }) {
+
   const [showComments, setShowComments] =
     useState(false);
 
-  // Safety Guard
-  if (!post) {
-    return null;
-  }
+  if (!post) return null;
 
   const likes = post.likes || [];
   const comments = post.comments || [];
@@ -26,25 +25,56 @@ function PostCard({
     likes.includes(user._id);
 
   return (
-    <div className="bg-base-100 rounded-2xl shadow-md border border-base-300 overflow-hidden hover:shadow-lg transition-all duration-300">
+
+    <div
+      className="
+      bg-base-100
+      rounded-2xl
+      shadow-md
+      border
+      border-base-300
+      overflow-hidden
+      hover:shadow-xl
+      hover:-translate-y-1
+      transition-all
+      duration-300
+      "
+    >
 
       {/* Header */}
-      <div className="p-5 flex gap-3">
 
-       <div className="avatar">
-  <div className="w-12 rounded-full">
-    <img
-  src={`https://ui-avatars.com/api/?name=${post.user?.name}`}
-  alt="avatar"
-/>
-  </div>
-</div>
+      <div className="p-5 flex gap-4">
+
+        <div className="avatar">
+
+          <div
+            className="
+            w-12
+            rounded-full
+            ring
+            ring-sky-500
+            ring-offset-base-100
+            ring-offset-2
+            "
+          >
+
+            <img
+              src={
+                post?.user?.avatar ||
+                defaultAvatar
+              }
+              alt="avatar"
+            />
+
+          </div>
+
+        </div>
 
         <div className="flex-1">
 
           <div className="flex items-center gap-2">
 
-            <h2 className="font-semibold text-lg">
+            <h2 className="font-semibold">
 
               {post?.user?.name ||
                 "Unknown User"}
@@ -52,19 +82,38 @@ function PostCard({
             </h2>
 
             {post.edited && (
-              <span className="badge badge-success badge-sm">
+
+              <span
+                className="
+                badge
+                badge-sm
+                bg-sky-500
+                text-white
+                border-0
+                "
+              >
                 Edited
               </span>
+
             )}
 
           </div>
 
-          <p className="text-sm opacity-60">
+          <p className="text-xs opacity-60">
+
+            @
+            {post?.user?.name
+              ?.toLowerCase()
+              ?.replace(/\s+/g, "")}
+
+          </p>
+
+          <p className="text-xs opacity-50 mt-1">
 
             {post.createdAt
               ? new Date(
                   post.createdAt
-                ).toLocaleString()
+                ).toLocaleDateString()
               : "Unknown Date"}
 
           </p>
@@ -75,7 +124,7 @@ function PostCard({
 
       {/* Content */}
 
-      <div className="px-5 pb-5">
+      <div className="px-5 pb-4">
 
         <p className="leading-7 whitespace-pre-wrap">
 
@@ -86,14 +135,16 @@ function PostCard({
 
       </div>
 
+      <div className="divider my-0"></div>
+
       {/* Stats */}
 
-      <div className="px-5 py-3 border-t border-base-300">
+      <div className="px-5 py-3">
 
-        <div className="flex gap-5 text-sm">
+        <div className="flex gap-6 text-sm font-medium">
 
           <span>
-            ❤️ {likes.length}
+            👍 {likes.length}
           </span>
 
           <span>
@@ -111,7 +162,7 @@ function PostCard({
         <button
           className={`btn btn-ghost rounded-none ${
             isLiked
-              ? "text-success"
+              ? "text-sky-500"
               : ""
           }`}
           onClick={() =>
@@ -120,9 +171,11 @@ function PostCard({
               : handleLike(post._id)
           }
         >
+
           {isLiked
-            ? "❤️ Liked"
-            : "🤍 Like"}
+            ? "👍 Liked"
+            : "👍 Like"}
+
         </button>
 
         <button
@@ -133,7 +186,7 @@ function PostCard({
             )
           }
         >
-          💬 Comment
+          Comment
         </button>
 
       </div>
@@ -141,7 +194,15 @@ function PostCard({
       {/* Comments */}
 
       {showComments && (
-        <div className="bg-base-200 p-4 border-t border-base-300">
+
+        <div
+          className="
+          bg-base-200
+          p-4
+          border-t
+          border-base-300
+          "
+        >
 
           {/* Add Comment */}
 
@@ -150,24 +211,42 @@ function PostCard({
             <input
               type="text"
               placeholder="Write a comment..."
-              className="input input-bordered flex-1"
+              className="
+              input
+              input-bordered
+              flex-1
+              "
               value={
-                commentText?.[post._id] ||
-                ""
+                commentText?.[
+                  post._id
+                ] || ""
               }
               onChange={(e) =>
-                setCommentText((prev) => ({
-                  ...prev,
-                  [post._id]:
-                    e.target.value,
-                }))
+                setCommentText(
+                  (prev) => ({
+                    ...prev,
+                    [post._id]:
+                      e.target.value,
+                  })
+                )
               }
             />
 
             <button
-              className="btn btn-success"
+              className="
+              btn
+              border-0
+              text-white
+              bg-gradient-to-r
+              from-sky-500
+              to-lime-500
+              hover:from-sky-600
+              hover:to-lime-600
+              "
               onClick={() =>
-                handleComment(post._id)
+                handleComment(
+                  post._id
+                )
               }
             >
               Post
@@ -180,65 +259,89 @@ function PostCard({
           <div className="mt-4 space-y-3">
 
             {comments.length === 0 && (
+
               <p className="text-sm opacity-60">
                 No comments yet.
               </p>
+
             )}
 
-            {comments.map((comment) => (
-              <div
-                key={comment._id}
-                className="bg-base-100 rounded-xl p-3 border border-base-300"
-              >
+            {comments.map(
+              (comment) => (
 
-                <div className="flex justify-between">
+                <div
+                  key={comment._id}
+                  className="
+                  bg-base-100
+                  rounded-xl
+                  p-3
+                  border
+                  border-base-300
+                  shadow-sm
+                  "
+                >
 
-                  <div>
+                  <div className="flex justify-between">
 
-                    <p className="font-medium text-sm">
+                    <div>
 
-                      {comment?.user
-                        ?.name ||
-                        "User"}
+                      <p className="font-medium text-sm">
 
-                    </p>
+                        {comment?.user
+                          ?.name ||
+                          "User"}
 
-                    <p className="mt-1 text-sm">
+                      </p>
 
-                      {comment.text}
+                      <p className="mt-1 text-sm">
 
-                    </p>
+                        {comment.text}
+
+                      </p>
+
+                    </div>
+
+                    {user &&
+                      comment?.user
+                        ?._id ===
+                        user._id && (
+
+                        <button
+                          className="
+                          btn
+                          btn-ghost
+                          btn-xs
+                          text-error
+                          "
+                          onClick={() =>
+                            handleDeleteComment(
+                              post._id,
+                              comment._id
+                            )
+                          }
+                        >
+                          Delete
+                        </button>
+
+                      )}
 
                   </div>
 
-                  {user &&
-                    comment?.user?._id ===
-                      user._id && (
-                      <button
-                        className="btn btn-error btn-xs"
-                        onClick={() =>
-                          handleDeleteComment(
-                            post._id,
-                            comment._id
-                          )
-                        }
-                      >
-                        Delete
-                      </button>
-                    )}
-
                 </div>
 
-              </div>
-            ))}
+              )
+            )}
 
           </div>
 
         </div>
+
       )}
 
     </div>
+
   );
+
 }
 
 export default PostCard;
